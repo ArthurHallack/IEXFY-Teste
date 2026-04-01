@@ -6,51 +6,27 @@ import * as ApiFunctions from '../functions'
 import '../assets/css/form.css'
 
 export function FormAdd({
-    pagina, 
+    name, 
     setIsFormAddVisible, 
-    setRefreshData, 
     setIsTableVisible, 
     typeRequest,
     elementFocus
 }) {
-    const [formDataProduct, setFormdataProduct] = useState({
-      name: "",
-      price: 0.0,
-      stockQuantity: 0,
-      type: "",
-    });
-  
-    const [formDataMaterial, setFormdataMaterial] = useState({
-      name: "",
-      stockQuantity: 0,
+    const [formData, setFormdata] = useState({
+      cliente: "",
+      valor: 0,
+      status: ""
     });
 
-    const[areaProductVisible, setAreaProductVisible] = useState (true)
-    const[areaMaterialVisible, setAreaMaterialVisible] = useState (false)
+    const { CriarNova } = useMyContext()
 
     useEffect(()=>{
-        if(pagina === "Material") {
-            setAreaMaterialVisible(true)
-            setAreaProductVisible(false)
-        }
-    },[pagina])
-
-    useEffect(()=>{
-        if (typeRequest == "Edit" && elementFocus && pagina === "Product"){
-            setFormdataProduct(prev => ({
+        if (typeRequest == "Edit" && elementFocus && name === "Inicio"){
+            setFormdata(prev => ({
                 ...prev,
-                name: elementFocus.name,
-                price: elementFocus.price,
-                stockQuantity: elementFocus.stockQuantity,
-                type: elementFocus.type
-            }))
-        }
-
-        if (typeRequest == "Edit" && elementFocus && pagina === "Material"){
-            setFormdataMaterial(prev => ({
-                ...prev,
-                name: elementFocus.name,
-                stockQuantity: elementFocus.stockQuantity,
+                cliente: elementFocus.cliente,
+                valor: elementFocus.valor,
+                status: elementFocus.status,
             }))
         }
     },[typeRequest])
@@ -59,51 +35,24 @@ export function FormAdd({
         setIsFormAddVisible(false)
         setIsTableVisible(true)
     }
-  
+ 
     //handlechange area-----------------------------------------
-    const handleProductChange = (e) => {
+    const handleChange = (e) => {
       const { name, value } = e.target;
       setFormdataProduct((prev) => ({
         ...prev,
         [name]: value,
       }));
     };
-  
-    const handleMaterialChange = (e) => {
-      const { name, value } = e.target;
-      setFormdataMaterial((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    };
-
-    const handlePriceBlur = () => {
-        setFormdataProduct((prev) => ({
-          ...prev,
-          price: parseFloat(prev.price).toFixed(2),
-        }));
-      };
     //----------------------------------------------------------
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        if (pagina === "Product") {
+        if (name === "Inicio") {
             if(typeRequest == "Add") {
-                const save = await ApiFunctions.SaveProduct(formDataProduct)
-                setRefreshData(true)
+                await CriarNova(formData)
                 fechar()
                 return
             }
-            const data = {
-                id: elementFocus.id,
-	            name: formDataProduct.name,
-                price: formDataProduct.price,
-                stockQuantity: formDataProduct.stockQuantity,
-                type: formDataProduct.type
-            }
-            const up = await ApiFunctions.UpdateProduct(data)
-            setRefreshData(true)
-            fechar()
-            return
         }
     }
 
@@ -113,79 +62,49 @@ export function FormAdd({
             <h3>Formulário de adição</h3>
             <p>Adicione um registro a tabela</p>
         </div>
-        {/* SEÇÃO DE PRODUTO */}
-        {areaProductVisible &&
-            <div className="formAddContainer">
+    
+        <div className="formAddContainer">
                 <fieldset>
-                    <label>Nome do Produto:</label>
+                    <label>Nome do Cliente:</label>
                     <input
                     type="text"
-                    name="name"
-                    value={formDataProduct.name}
-                    onChange={handleProductChange}
+                    name="cliente"
+                    value={formData.cliente}
+                    onChange={handleChange}
                     />
                 </fieldset>
                 <fieldset>
-                    <label>Tipo:</label>
-                    <select
-                    name="type"
-                    value={formDataProduct.type}
-                    style={{ width: "8rem" }}
-                    onChange={handleProductChange}
-                    >
-                        <option value="">Selecione</option>
-                        <option value="CHOCOLATE">CHOCOLATE</option>
-                        <option value="CAKE">CAKE</option>
-                        <option value="CANDY">CANDY</option>
-                    </select>
+                    <label>Status:</label>
+                    <select 
+                    name="status" 
+                    value={formData.status} 
+                    onChange={handleChange}
+                    style={{
+                        width: '8rem',
+                        padding: '0.8rem',
+                        borderRadius: '5px',
+                        border: '1px solid #ccc',
+                    }}
+                >
+                    <option value="">Todos os Status</option>
+                    <option value="aberta">Aberta</option>
+                    <option value="ganha">Ganha</option>
+                    <option value="perdida">Perdida</option>
+                </select>
                 </fieldset>
                 <fieldset>
-                    <label>Preço:</label>
+                    <label>Valor:</label>
                     <input
                     type="number"
-                    name="price"
-                    step="0.01"
-                    value={formDataProduct.price}
-                    onChange={handleProductChange}
-                    onBlur={handlePriceBlur}
+                    name="valor"
+                    style={{
+                        width: '8rem'
+                    }}
+                    value={formData.valor}
+                    onChange={handleChange}
                     />
                 </fieldset>
-                <fieldset>
-                    <label>Quantidade em Estoque:</label>
-                    <input
-                    type="number"
-                    name="stockQuantity"
-                    value={formDataProduct.stockQuantity}
-                    onChange={handleProductChange}
-                    />
-                </fieldset>
-            </div>
-        }
-  
-        {/* SEÇÃO DE MATERIAL */}
-        {areaMaterialVisible &&
-            <div className="formAddContainer">
-                <fieldset>
-                    <label>Nome do Material:</label>
-                    <input
-                    type="text"
-                    name="name"
-                    value={formDataMaterial.name}
-                    onChange={handleMaterialChange}
-                    />
-                </fieldset>
-        
-                <fieldset>
-                    <label>Quantidade:</label>
-                    <input
-                    type="number"
-                    name="stockQuantity"
-                    value={formDataMaterial.stockQuantity}
-                    onChange={handleMaterialChange}
-                    />
-                </fieldset>
-            </div>
-        }
+        </div>
 
         <section style={{
                 marginTop: '2rem'
@@ -195,7 +114,7 @@ export function FormAdd({
         </section>
       </form>
     );
-  }
+}
 
 export function FormFilter({
         name, 
@@ -203,7 +122,7 @@ export function FormFilter({
         setIsTableVisible, 
     }) {
     
-    const { Filtro } = useMyContext();
+    const { filtrarOportunidades } = useMyContext();
     const [formData, setFormdata] = useState({
         cliente: "",
         status: ""
@@ -232,7 +151,7 @@ export function FormFilter({
         e.preventDefault();
         
         if (name === "Inicio") {
-            await ApiFunctions.Filtro(formData.status, formData.cliente)
+            await filtrarOportunidades(formData.status, formData.cliente)
             fechar()
         }
     };

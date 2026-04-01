@@ -36,6 +36,15 @@ function App() {
       setIsFormFilterVisible={setIsFormFilterVisible}
       setTypeRequest={setTypeRequest}/>
 
+      {isFormAddVisible &&
+        <FormAdd 
+        pagina={"Inicio"} 
+        setIsFormAddVisible={setIsFormAddVisible}
+        setIsTableVisible={setIsTableVisible}
+        typeRequest={typeRequest}
+        elementFocus={elementFocus}/>
+      }
+
       {isFormFilterVisible &&
         <FormFilter 
         name={"Inicio"} 

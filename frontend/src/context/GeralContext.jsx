@@ -28,13 +28,28 @@ export function MyProvider({ children }) {
     const filtrarOportunidades = async (status, cliente) => {
         setIsLoading(true);
         
-        const dados = await ApiFunctions.Listar({ status, cliente });
+        const dados = await ApiFunctions.Filtro({ status, cliente });
         setArrayData(dados);
         setIsLoading(false);
-    };
+    }
+
+    const CriarNova = async (dados) => {
+        try {
+            setIsLoading(true);
+            const resultado = await ApiFunctions.Criar(dados)
+            
+            setArrayData(prev => [...prev, resultado])
+            
+            return true
+        } catch (error) {
+            return false
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     return (
-        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha, filtrarOportunidades}}>
+        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha, filtrarOportunidades, CriarNova}}>
             {children}
         </MyContext.Provider>
     );
