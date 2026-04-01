@@ -51,3 +51,7 @@
   .bottomArea {
     height: 10vh;
   }
+
+  .centerArea span {
+    width: 7rem;
+  }

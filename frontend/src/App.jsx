@@ -4,7 +4,8 @@ import { Table } from './components/Table'
 import { FormAdd, FormFilter } from './components/Form'
 
 import Confirm from './components/Confirm'
-import  Modal  from './components/Modal'
+import Modal  from './components/Modal'
+import ModalDasBoard from './components/ModalDashBoard'
 
 import * as Apifunctions from '../src/functions'
 import { useMyContext } from './context/GeralContext'
@@ -21,6 +22,7 @@ function App() {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isFormAddVisible, setIsFormAddVisible] = useState(false)
   const [isFormFilterVisible, setIsFormFilterVisible] = useState(false)
+  const [isModalDashBoard, setIsModalDashBoard] = useState(false)
   //context------------------------------------------------------
   const {ArrayData, AttArrayData} = useMyContext()
   //-------------------------------------------------------------
@@ -65,6 +67,11 @@ function App() {
         setIsModalVisible={setIsModalVisible}/>
       }
 
+      {isModalDashBoard &&
+        <ModalDasBoard 
+        setIsModalDashBoard={setIsModalDashBoard}/>
+      }
+
       {isTableVisible && 
         <Table 
           pagina={"Inicio"} 
@@ -75,6 +82,7 @@ function App() {
           setElementFocus={setElementFocus}
           setElementMat={setElementMat}
           setTypeRequest={setTypeRequest}
+          setIsModalDashBoard={setIsModalDashBoard}
         />
       }
     </>

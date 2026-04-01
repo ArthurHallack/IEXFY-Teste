@@ -7,6 +7,8 @@ import { faFile} from "@fortawesome/free-solid-svg-icons"
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { faTrash, faStapler } from "@fortawesome/free-solid-svg-icons"
 
+import {ChartColumnIncreasing} from "lucide-react";
+
 import * as Apifunctions from '../functions'
 
 import '../assets/css/table.css'
@@ -25,22 +27,26 @@ const cor3 = {
 }
 
 export function Table ({
-    pagina, 
     setIsConfirmVisible, 
     setIsFormAddVisible, 
     setIsTableVisible, 
     setIsModalVisible, 
     setElementFocus,
-    setElementMat,
-    setTypeRequest
+    setTypeRequest,
+    setIsModalDashBoard
 }) {
 
-    const {arrayData, setArrayData, setDataFicha} = useMyContext()
+    const {arrayData, setArrayData, setDataFicha, atualizarDashboard} = useMyContext()
 
     async function Ficha (element) {
         const data = await Apifunctions.Ficha(element.id)
         setDataFicha(data)
         setIsModalVisible(true)
+    }
+
+    async function dashBoardOpen () {
+        await atualizarDashboard()
+        setIsModalDashBoard(true)
     }
 
     function confirmDelete (element) {
@@ -76,6 +82,13 @@ export function Table ({
                             <li className="List-Item stock-list-item">{obj.data}</li>
                             <li className="List-Item stock-list-item">
                                 <div className="btnsList">
+                                    <ChartColumnIncreasing
+                                        size={20}
+                                        style={{
+                                            cursor: 'pointer'
+                                        }}
+                                        onClick={()=>{dashBoardOpen()}}
+                                    />
                                     <FontAwesomeIcon
                                         icon={faFile}
                                         className="icon"

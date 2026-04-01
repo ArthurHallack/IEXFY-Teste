@@ -7,7 +7,12 @@ export function MyProvider({ children }) {
     const [arrayData, setArrayData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [dataFicha, setDataFicha] = useState();
+    const [resumo, setResumo] = useState({
+        totalValorAgregado: 0,
+        totaisPorStatus: {} 
+    });
 
+    //effects-------------------------------------------------
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -24,7 +29,7 @@ export function MyProvider({ children }) {
 
         fetchData();
     }, [])
-
+    //--------------------------------------------------------
     const filtrarOportunidades = async (status, cliente) => {
         setIsLoading(true);
         
@@ -62,8 +67,13 @@ export function MyProvider({ children }) {
         }
     };
 
+    const atualizarDashboard = async () => {
+        const dados = await ApiFunctions.Dashboard();
+        setResumo(dados);
+    };
+
     return (
-        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha, filtrarOportunidades, CriarNova, EditarOportunidade}}>
+        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha, filtrarOportunidades, CriarNova, EditarOportunidade, atualizarDashboard, resumo}}>
             {children}
         </MyContext.Provider>
     );
