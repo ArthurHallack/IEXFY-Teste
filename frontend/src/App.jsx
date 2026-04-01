@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Title } from './components/Title'
 import { Table } from './components/Table'
+import  Modal  from './components/Modal'
 
 import * as Apifunctions from '../src/functions'
 import { useMyContext } from './context/GeralContext'
@@ -31,6 +32,11 @@ function App() {
       setIsFormAddVisible={setIsFormAddVisible}
       setIsFormFilterVisible={setIsFormFilterVisible}
       setTypeRequest={setTypeRequest}/>
+
+      {isModalVisible &&
+        <Modal 
+        setIsModalVisible={setIsModalVisible}/>
+      }
 
       {isTableVisible && 
         <Table 

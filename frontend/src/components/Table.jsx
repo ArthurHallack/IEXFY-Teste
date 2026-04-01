@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+
 import { useMyContext } from "../context/GeralContext";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,7 +35,7 @@ export function Table ({
     setTypeRequest
 }) {
 
-    const {arrayData, setArrayData, dataFicha, setDataFicha} = useMyContext()
+    const {arrayData, setArrayData, setDataFicha} = useMyContext()
 
     async function Ficha (element) {
         const data = await Apifunctions.Ficha(element.id)
@@ -47,9 +48,9 @@ export function Table ({
             <ul className="Hud"> 
                 <li className="Hud-id">ID</li>
                 <li className="Hud-name">NOME</li>
-                <li className="Hud-type">TIPO</li>
-                <li className="Hud-price">PREÇO</li> 
-                <li className="Hud-stock">ESTOQUE</li>
+                <li className="Hud-type">STATUS</li>
+                <li className="Hud-price">VALOR</li> 
+                <li className="Hud-stock">DATA</li>
                 <li className="Hud-balance"></li>
             </ul>
             <div className="List">
