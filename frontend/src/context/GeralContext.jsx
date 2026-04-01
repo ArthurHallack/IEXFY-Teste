@@ -48,8 +48,22 @@ export function MyProvider({ children }) {
         }
     }
 
+    const EditarOportunidade = async (id, dados) => {
+        try {
+            const resultado = await ApiFunctions.Editar(id, dados);
+    
+            setArrayData(prev => 
+                prev.map(item => item.id === id ? resultado : item)
+            );
+            
+            return true;
+        } catch (error) {
+            return false;
+        }
+    };
+
     return (
-        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha, filtrarOportunidades, CriarNova}}>
+        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha, filtrarOportunidades, CriarNova, EditarOportunidade}}>
             {children}
         </MyContext.Provider>
     );

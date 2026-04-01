@@ -47,6 +47,13 @@ export function Table ({
         setIsConfirmVisible(true)
         setElementFocus(element)
     }
+
+    function edit (element) {
+        setIsFormAddVisible(true)
+        setIsTableVisible(false)
+        setElementFocus(element)
+        setTypeRequest("Edit")
+    }
     
     return(
         <div className="Table">
@@ -79,6 +86,7 @@ export function Table ({
                                         icon={faPenToSquare}
                                         className="icon"
                                         style={cor1}
+                                        onClick={() => {edit(obj)}}
                                     />
                                     <FontAwesomeIcon
                                         icon={faTrash}

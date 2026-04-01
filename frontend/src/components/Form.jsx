@@ -17,29 +17,33 @@ export function FormAdd({
       valor: 0,
       status: ""
     });
+    const [readOnly, setReadOnly] = useState(false)
 
-    const { CriarNova } = useMyContext()
+    const { CriarNova, EditarOportunidade } = useMyContext()
 
     useEffect(()=>{
-        if (typeRequest == "Edit" && elementFocus && name === "Inicio"){
+        if (typeRequest == "Edit" && elementFocus){
             setFormdata(prev => ({
                 ...prev,
                 cliente: elementFocus.cliente,
                 valor: elementFocus.valor,
                 status: elementFocus.status,
             }))
+            setReadOnly(true)
         }
-    },[typeRequest])
+    },[])
 
     const fechar = () => {
         setIsFormAddVisible(false)
         setIsTableVisible(true)
     }
+    console.log("focus",elementFocus)
+    console.log("formdata",formData)
  
     //handlechange area-----------------------------------------
     const handleChange = (e) => {
       const { name, value } = e.target;
-      setFormdataProduct((prev) => ({
+      setFormdata((prev) => ({
         ...prev,
         [name]: value,
       }));
@@ -47,13 +51,15 @@ export function FormAdd({
     //----------------------------------------------------------
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        if (name === "Inicio") {
-            if(typeRequest == "Add") {
-                await CriarNova(formData)
-                fechar()
-                return
-            }
+        if(typeRequest == "Add") {
+            await CriarNova(formData)
+            fechar()
+            return
         }
+        await EditarOportunidade(elementFocus.id, formData)
+        fechar()
+        return
+        
     }
 
     return (
@@ -69,8 +75,10 @@ export function FormAdd({
                     <input
                     type="text"
                     name="cliente"
+                    placeholder="Nome do Cliente"
                     value={formData.cliente}
                     onChange={handleChange}
+                    readOnly={readOnly}
                     />
                 </fieldset>
                 <fieldset>
@@ -81,16 +89,18 @@ export function FormAdd({
                     onChange={handleChange}
                     style={{
                         width: '8rem',
-                        padding: '0.8rem',
                         borderRadius: '5px',
                         border: '1px solid #ccc',
+                        outline: 'none',
+                        borderColor: formData.status ? '#3F80EA' : '#ccc', 
+                        fontWeight: formData.status ? 'bold' : 'normal'
                     }}
                 >
-                    <option value="">Todos os Status</option>
-                    <option value="aberta">Aberta</option>
-                    <option value="ganha">Ganha</option>
-                    <option value="perdida">Perdida</option>
-                </select>
+                        <option value="">Todos os Status</option>
+                        <option value="aberta">Aberta</option>
+                        <option value="ganha">Ganha</option>
+                        <option value="perdida">Perdida</option>
+                    </select>
                 </fieldset>
                 <fieldset>
                     <label>Valor:</label>
@@ -182,7 +192,6 @@ export function FormFilter({
                     onChange={handleChange}
                     style={{
                         width: '8rem',
-                        padding: '0.8rem',
                         borderRadius: '5px',
                         border: '1px solid #ccc',
                     }}
