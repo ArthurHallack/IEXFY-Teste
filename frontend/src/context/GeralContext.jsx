@@ -72,8 +72,25 @@ export function MyProvider({ children }) {
         setResumo(dados);
     };
 
+    const DeletarOportunidade = async (id) => {
+        try {
+            setIsLoading(true)
+            await ApiFunctions.Delete(id)
+            
+            setArrayData(prev => prev.filter(oportunidade => oportunidade.id !== id))
+    
+            return true
+
+        } catch (error) {
+            console.error("Erro ao deletar:", error)
+            return false
+        } finally {
+            setIsLoading(false)
+        }
+    };
+
     return (
-        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha, filtrarOportunidades, CriarNova, EditarOportunidade, atualizarDashboard, resumo}}>
+        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha, filtrarOportunidades, CriarNova, EditarOportunidade, atualizarDashboard, resumo, DeletarOportunidade}}>
             {children}
         </MyContext.Provider>
     );

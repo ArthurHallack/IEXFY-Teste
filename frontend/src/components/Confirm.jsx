@@ -6,7 +6,7 @@ import * as ApiFunctions from "../functions"
 import '../assets/css/confirm.css'
 
 function Confirm({ setIsConfirmVisible, element, name }) {
-    const { setArrayData } = useMyContext()
+    const { DeletarOportunidade } = useMyContext()
     
     const stylo = {
         textDecoration: 'none'
@@ -26,7 +26,7 @@ function Confirm({ setIsConfirmVisible, element, name }) {
     async function excluir () {
         switch (name) {
             case "Inicio":
-                var data = await ApiFunctions.Delete(element.id)
+                await DeletarOportunidade(element.id)
                 setIsConfirmVisible(false)
                 break;
         }
