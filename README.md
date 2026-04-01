@@ -113,6 +113,7 @@ Optei por **NÃO útilizar** um banco de dados (Postgres, MySQL), por fins de pr
 - React.js  
 - Vite  
 - Node.js 
+- Express.js 
 - Lucide (ícones)  
 - FontAwesome (ícones)  
 - JavaScript  
