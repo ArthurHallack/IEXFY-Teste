@@ -42,6 +42,11 @@ export function Table ({
         setDataFicha(data)
         setIsModalVisible(true)
     }
+
+    function confirmDelete (element) {
+        setIsConfirmVisible(true)
+        setElementFocus(element)
+    }
     
     return(
         <div className="Table">
@@ -79,6 +84,7 @@ export function Table ({
                                         icon={faTrash}
                                         className="icon"
                                         style={cor3}
+                                        onClick={() => {confirmDelete(obj)}}
                                     />
                                 </div>
                             </li>

@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { Title } from './components/Title'
 import { Table } from './components/Table'
+import { FormAdd, FormFilter } from './components/Form'
+
+import Confirm from './components/Confirm'
 import  Modal  from './components/Modal'
 
 import * as Apifunctions from '../src/functions'
@@ -32,6 +35,21 @@ function App() {
       setIsFormAddVisible={setIsFormAddVisible}
       setIsFormFilterVisible={setIsFormFilterVisible}
       setTypeRequest={setTypeRequest}/>
+
+      {isFormFilterVisible &&
+        <FormFilter 
+        name={"Inicio"} 
+        setIsFormFilterVisible={setIsFormFilterVisible}
+        setIsTableVisible={setIsTableVisible}/>
+      }
+
+      {isConfirmVisible &&
+        <Confirm 
+        name={"Inicio"} 
+        element={elementFocus} 
+        setIsConfirmVisible={setIsConfirmVisible}/>
+      }
+
 
       {isModalVisible &&
         <Modal 

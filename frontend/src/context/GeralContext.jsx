@@ -25,8 +25,16 @@ export function MyProvider({ children }) {
         fetchData();
     }, [])
 
+    const filtrarOportunidades = async (status, cliente) => {
+        setIsLoading(true);
+        
+        const dados = await ApiFunctions.Listar({ status, cliente });
+        setArrayData(dados);
+        setIsLoading(false);
+    };
+
     return (
-        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha}}>
+        <MyContext.Provider value={{ arrayData, setArrayData, dataFicha, setDataFicha, filtrarOportunidades}}>
             {children}
         </MyContext.Provider>
     );
